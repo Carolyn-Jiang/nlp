@@ -4,46 +4,46 @@ import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def merge_txt(path):
-	file_names = []
-	for files in os.listdir(path):
-		if '.txt' in files:
-			file_names.append(files)
-	names = []
-	def merge_names(path):
-		for name in file_names:
-			def find_all_names(name, path):
-				file = open(path + name, 'r')
-				for line in file:
-					if 'Name:' in line:
-						line = line.strip('\n')
-						name = line.replace('Name: ', '')
-						name = name.replace("'", '')
-						names.append(name)
-				return(names)
-			all_names = []
-			all_names = all_names + find_all_names(name, path)
-		return(all_names)
-	purposes = []
-	def merge_purposes(path):
-		for name in file_names:
-			def  find_all_purposes(name, path):
-				file = open(path + name, 'r')
-				for line in file:
-					if 'Purpose:' in line:
-						line = line.strip('\n')
-						line = line.strip('(')
-						line = line.replace(')', '')
-						purpose = line.replace('Purpose: ', '')
-						purpose = purpose.replace("'", '')
-						purposes.append(purpose)
-				return(purposes)
-			all_purposes = []
-			all_purposes = all_purposes + find_all_purposes(name, path)
-		return(all_purposes)
-	Name = merge_names(path)
-	Purpose = merge_purposes(path)
-	merge_txt = pd.DataFrame({'Name':Name, 'Purpose':Purpose})
-	return(merge_txt)
+    file_names = []
+    for files in os.listdir(path):
+        if '.txt' in files:
+            file_names.append(files)
+    names = []
+    def merge_names(path):
+        for name in file_names:
+            def find_all_names(name, path):
+                file = open(path + name, 'r')
+                for line in file:
+                    if 'Name:' in line:
+                        line = line.strip('\n')
+                        name = line.replace('Name: ', '')
+                        name = name.replace("'", '')
+                        names.append(name)
+                return(names)
+            all_names = []
+            all_names = all_names + find_all_names(name, path)
+        return(all_names)
+    purposes = []
+    def merge_purposes(path):
+        for name in file_names:
+            def  find_all_purposes(name, path):
+                file = open(path + name, 'r')
+                for line in file:
+                    if 'Purpose:' in line:
+                        line = line.strip('\n')
+                        line = line.strip('(')
+                        line = line.replace(')', '')
+                        purpose = line.replace('Purpose: ', '')
+                        purpose = purpose.replace("'", '')
+                        purposes.append(purpose)
+                return(purposes)
+            all_purposes = []
+            all_purposes = all_purposes + find_all_purposes(name, path)
+        return(all_purposes)
+    Name = merge_names(path)
+    Purpose = merge_purposes(path)
+    merge_txt = pd.DataFrame({'Name':Name, 'Purpose':Purpose})
+    return(merge_txt)
 
 def merge_table(filename):
     file_name = []
@@ -105,7 +105,7 @@ def merge_all(path):
     Name = merge_names(path)
     Purpose = merge_purposes(path)
     merge_all = pd.DataFrame({'Name':Name, 'Purpose':Purpose})
-    return(merge_all) 
+    return(merge_all)
 
 def purposes_scores(file):
     f = open(file, 'r')
@@ -130,13 +130,9 @@ def worse_best(file):
     data = purposes_scores(file)
     list = [(data['Name'][i], data['Compound'][i]) for i in range(0, len(data))]
     list.sort(key = lambda x:x[1])
-    worse = list[0:5]
-    best = list[-6:-1]
-    result = {
-        'Best':best,
-        'Worse':worse
-    }
-    return(result)
+    worse = [list[i] for i in range(0,10)]
+    best = [list[i] for i in range(-10,0)] 
+    return(print('Best\n', best, '\n', 'Worse\n', worse))
 
 if __name__ == "__main__":
     path = '/Users/yuechenjiang/Desktop/FE595/FE595HW3/Companys/' 
@@ -150,16 +146,25 @@ if __name__ == "__main__":
 
 '''
 Best
- [('Day, Williams and Diaz', 0.743), 
+ [('Powell-Hamilton', 0.7184), 
+ ('Phillips Group', 0.7184), 
+ ('Diaz-Ross', 0.7269), 
+ ('Hill-Martin', 0.7351), 
+ ('Day, Williams and Diaz', 0.743), 
  ('Hall, Heath and Perez', 0.743), 
  ('Cabrera, Levine and Underwood', 0.7579), 
  ('Barajas LLC', 0.765), 
  ('Roberts-Huff', 0.7717), 
- ('Stokes and Sons', 0.7845)]
+ ('Stokes and Sons', 0.7845)] 
  Worse
  [('Mcclain, Mccarthy and Lozano', -0.6486), 
  ('Huffman, Norton and Cantu', -0.6486), 
  ('Washington-Mccormick', -0.6486), 
  ('Medina-Dorsey', -0.6486), 
- ('Willis and Sons', -0.6486)]
+ ('Willis and Sons', -0.6486), 
+ ('Green, Holland and Bennett', -0.6486), 
+ ('Garrett Inc', -0.4588), 
+ ('Smith-Farmer', -0.1027), 
+ ('Warner-Chambers', -0.1027), 
+ ('Turner Group', -0.1027)]
  '''
