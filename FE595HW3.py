@@ -1,7 +1,6 @@
 import os
 import csv
 import pandas as pd
-import nltk
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def merge_txt(path):
